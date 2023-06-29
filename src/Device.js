@@ -19,29 +19,29 @@ class Device extends EventEmitter {
   }
 
   async init () {
-    this.propertyChangeListener = this.helper.on('PropertiesChanged', (propertiesChanged) => {
-      if ('ManufacturerData' in propertiesChanged) {
-        const { value } = propertiesChanged.ManufacturerData
-        if (value) {
-          this.emit('manufacturerData', value)
-        }
+    this.helper.on('PropertiesChanged', onPropertyChanged)
+  }
+
+  onPropertyChanged(propertiesChanged)
+  {
+    if ('ManufacturerData' in propertiesChanged) {
+      const { value } = propertiesChanged.ManufacturerData
+      if (value) {
+        this.emit('manufacturerData', value)
       }
-      if ('Connected' in propertiesChanged) {
-        const { value } = propertiesChanged.Connected
-        if (value) {
-          this.emit('connect', { connected: true })
-        } else {
-          this.emit('disconnect', { connected: false })
-        }
+    }
+    if ('Connected' in propertiesChanged) {
+      const { value } = propertiesChanged.Connected
+      if (value) {
+        this.emit('connect', { connected: true })
+      } else {
+        this.emit('disconnect', { connected: false })
       }
-    })
+    }
   }
 
   async dispose () {
-    if(this.propertyChangeListener != null)
-    {
-      this.helper.removeListener('PropertiesChanged', this.propertyChangeListener);
-    }
+    this.helper.removeListener('PropertiesChanged', onPropertyChanged);
   }
 
   /**
