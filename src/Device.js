@@ -40,7 +40,7 @@ class Device extends EventEmitter {
   async dispose () {
     if(this.propertyChangeListener != null)
     {
-      this.helper.off('PropertiesChanged', this.propertyChangeListener);
+      this.helper.removeListener('PropertiesChanged', this.propertyChangeListener);
     }
   }
 
