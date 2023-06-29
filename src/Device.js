@@ -19,7 +19,7 @@ class Device extends EventEmitter {
   }
 
   async init () {
-    this.propertyChangeListener = this.helper.on('PropertiesChanged', (propertiesChanged) => {
+    this.helper.on('PropertiesChanged', (propertiesChanged) => {
       if ('ManufacturerData' in propertiesChanged) {
         const { value } = propertiesChanged.ManufacturerData
         if (value) {
@@ -38,10 +38,7 @@ class Device extends EventEmitter {
   }
 
   async dispose() {
-    if(this.propertyChangeListener != null)
-    {
-      this.helper.removeAllListeners("PropertiesChanged");
-    }
+    this.helper.removeAllListeners("PropertiesChanged");
   }
 
   /**
